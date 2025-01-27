@@ -33,7 +33,7 @@ def response_generator(user_prompt, api_key):
     response = chat.send_message([get_prompt(), user_prompt])
 
     # Generate the response word by word
-    for word in response.split():
+    for word in response.text.split():
         yield word + " "
         time.sleep(0.05)  # Simulate typing delay
 
