@@ -1,17 +1,17 @@
 import streamlit as st
-import random
 import time
 
+# Assuming you have a 'get_model' and 'get_prompt' function in your Model and Prompt modules
 from Model import get_model
 from Prompt import get_prompt
 
-st.title("Simple chat")
+st.title("Simple Chat")
 
 # Initialize chat history if not already initialized
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# Display chat messages from history on app rerun
+# Display chat messages from history
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
@@ -21,29 +21,32 @@ if prompt := st.chat_input("What is up?"):
     # Display user message in chat message container
     with st.chat_message("user"):
         st.markdown(prompt)
+
     # Add user message to chat history
     st.session_state.messages.append({"role": "user", "content": prompt})
 
-
-    # Call the response generator to get the assistant's reply
+    # Define response generator to handle chat completion with history
     def response_generator(user_prompt, api_key):
-        model = get_model(0.2, 1, 1024, api_key)  # Initialize the model with your settings
-        chat = model.start_chat()  # Start the chat session
+        # Initialize the model (ensure to use your specific model settings)
+        model = get_model(0.2, 1, 1024, api_key)
+        chat = model.start_chat()
 
-        # Get the response from the assistant by sending the user's prompt and system prompt
-        response = chat.send_message([get_prompt(), user_prompt])
+        # Add the system prompt and user prompt to the conversation history
+        # This sends the entire conversation context to the model
+        conversation = [get_prompt()] + [{"role": "user", "content": user_prompt}]
 
-        # Return the full response after processing
-        return response.text
+        # Send the conversation to the model
+        response = chat.send_message(conversation)
 
+        # Extract the text of the response (check the exact attribute based on the model's API)
+        return response.text  # Make sure this matches the actual response structure
 
-    # Display assistant response in chat message container
+    # Get the assistant's reply
+    full_response = response_generator(prompt, api_key=st.secrets['api_key'])
+
+    # Display the assistant's full response
     with st.chat_message("assistant"):
-        # Get the complete response from the assistant
-        full_response = response_generator(prompt, api_key=st.secrets['api_key'])
-
-        # Display the full response at once
         st.markdown(full_response)
 
-        # Once the full response is generated, append it to the chat history
-        st.session_state.messages.append({"role": "assistant", "content": full_response})
+    # Once the full response is generated, append it to the chat history
+    st.session_state.messages.append({"role": "assistant", "content": full_response})
