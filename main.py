@@ -31,12 +31,8 @@ if prompt := st.chat_input("What is up?"):
         model = get_model(0.2, 1, 1024, api_key)
         chat = model.start_chat()
 
-        # Add the system prompt and user prompt to the conversation history
-        # This sends the entire conversation context to the model
-        conversation = [get_prompt()] + [{"role": "user", "content": user_prompt}]
-
         # Send the conversation to the model
-        response = chat.send_message(conversation)
+        response = chat.send_message([get_prompt(), user_prompt])
 
         # Extract the text of the response (check the exact attribute based on the model's API)
         return response.text  # Make sure this matches the actual response structure
