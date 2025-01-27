@@ -26,8 +26,8 @@ if prompt := st.chat_input("What is up?"):
 
 def response_generator(user_prompt, api_key):
     model = get_model(0.2,1,1024, api_key)
-
-    response = model.send_message([get_prompt(), prompt])
+    chat = model.start_chat()
+    response = chat.send_message([get_prompt(), prompt])
 
     for word in response.split():
         yield word + " "
