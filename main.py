@@ -7,7 +7,7 @@ from Prompt import get_prompt
 
 st.title("Simple chat")
 
-# Initialize chat history
+# Initialize chat history if not already initialized
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
@@ -25,28 +25,25 @@ if prompt := st.chat_input("What is up?"):
     st.session_state.messages.append({"role": "user", "content": prompt})
 
 
-def response_generator(user_prompt, api_key):
-    model = get_model(0.2, 1, 1024, api_key)  # Initialize the model with your settings
-    chat = model.start_chat()  # Start the chat session
+    # Call the response generator to get the assistant's reply
+    def response_generator(user_prompt, api_key):
+        model = get_model(0.2, 1, 1024, api_key)  # Initialize the model with your settings
+        chat = model.start_chat()  # Start the chat session
 
-    # Get the response from the assistant by sending the user's prompt and system prompt
-    response = chat.send_message([get_prompt(), user_prompt])
+        # Get the response from the assistant by sending the user's prompt and system prompt
+        response = chat.send_message([get_prompt(), user_prompt])
 
-    # Generate the response word by word
-    for word in response.text.split():
-        yield word + " "
-        time.sleep(0.05)  # Simulate typing delay
+        # Return the full response after processing
+        return response
 
 
-# Display assistant response in chat message container
-if prompt:  # Ensure there is a prompt before trying to get a response
+    # Display assistant response in chat message container
     with st.chat_message("assistant"):
-        full_response = ""  # Initialize a variable to collect the full response
+        # Get the complete response from the assistant
+        full_response = response_generator(prompt, api_key=st.secrets['api_key'])
 
-        # Stream the response
-        for word in response_generator(prompt, api_key=st.secrets['api_key']):
-            full_response += word
-
+        # Display the full response at once
         st.markdown(full_response)
+
         # Once the full response is generated, append it to the chat history
         st.session_state.messages.append({"role": "assistant", "content": full_response})
