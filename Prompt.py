@@ -1,4 +1,4 @@
-def prompt():
+def get_prompt():
     model_instructions = """
     You are a Travel itinerary creator, ur task is to get relevant information from the user input, and combine all of them into a day to day itinerary.
 
