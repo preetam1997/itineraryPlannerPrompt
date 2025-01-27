@@ -1,5 +1,6 @@
 import streamlit as st
 import time
+import json
 
 # Assuming you have a 'get_model' and 'get_prompt' function in your Model and Prompt modules
 from Model import get_model
@@ -32,7 +33,7 @@ if prompt := st.chat_input("What is up?"):
         chat = model.start_chat()
 
         # Send the conversation to the model
-        response = chat.send_message([get_prompt(), user_prompt, st.session_state.messages])
+        response = chat.send_message([get_prompt(), user_prompt, json.dumps(st.session_state.messages)])
 
         # Extract the text of the response (check the exact attribute based on the model's API)
         return response.text  # Make sure this matches the actual response structure
