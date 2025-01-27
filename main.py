@@ -34,7 +34,7 @@ if prompt := st.chat_input("What is up?"):
         response = chat.send_message([get_prompt(), user_prompt])
 
         # Return the full response after processing
-        return response
+        return response.text
 
 
     # Display assistant response in chat message container
