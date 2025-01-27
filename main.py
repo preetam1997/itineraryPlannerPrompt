@@ -1,17 +1,14 @@
 import streamlit as st
 
+from Model import get_model
 
+API_KEY = st.secrets["api_key"]
 # Function to generate a simple response (replace with your AI model call)
-def generate_response(user_input):
-    # Simulate a basic response
-    # Replace this with a call to an AI model such as Google Gemini, OpenAI, or any other model
-    if "hello" in user_input.lower():
-        return "Hi there! How can I assist you with your trip planning today?"
-    elif "help" in user_input.lower():
-        return "Sure, I can help you with travel itinerary planning, recommendations, and more. What would you like to know?"
-    else:
-        return "Sorry, I didn't understand that. Can you please clarify?"
-
+def generate_response(user_input, api_key):
+    model = get_model(1,1,1024, api_key)
+    chat = model.start_chat()
+    response = chat.send_message(user_input)
+    return response.text
 
 # Streamlit interface
 def chatbot_interface():
@@ -30,7 +27,7 @@ def chatbot_interface():
         st.session_state['chat_history'].append(f"You: {user_input}")
 
         # Generate a response (this is where you'd plug in an AI model like Google Gemini)
-        bot_response = generate_response(user_input)
+        bot_response = generate_response(user_input, API_KEY)
 
         # Store bot response in the chat history
         st.session_state['chat_history'].append(f"Bot: {bot_response}")

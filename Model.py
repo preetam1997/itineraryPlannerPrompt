@@ -4,7 +4,7 @@ from google.api_core import retry
 from IPython.display import HTML, Markdown, display
 import streamlit as st
 
-API_KEY = st.secrets["api_key"]
+
 
 def get_model(temperature, top_p, max_output_token, api_key):
     genai.configure(api_key=api_key)
