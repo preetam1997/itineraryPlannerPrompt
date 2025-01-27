@@ -5,7 +5,7 @@ from Model import get_model
 API_KEY = st.secrets["api_key"]
 # Function to generate a simple response (replace with your AI model call)
 def generate_response(user_input, api_key):
-    model = get_model(1,1,1024, api_key)
+    model = get_model(0.2,1,1024, api_key)
     chat = model.start_chat()
     response = chat.send_message(user_input)
     return response.text
