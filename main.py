@@ -44,4 +44,4 @@ def chatbot_interface():
 
 
 if __name__ == "__main__":
-    ch
+    chatbot_interface()
