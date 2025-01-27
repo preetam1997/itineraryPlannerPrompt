@@ -32,8 +32,11 @@ if prompt := st.chat_input("What is up?"):
         model = get_model(0.2, 1, 1024, api_key)
         chat = model.start_chat()
 
+        if len(st.session_state.messages) == 1:
+            response = chat.send_message([get_prompt(), user_prompt, json.dumps(st.session_state.messages)])
         # Send the conversation to the model
-        response = chat.send_message([get_prompt(), user_prompt, json.dumps(st.session_state.messages)])
+        else:
+            response = chat.send_message([user_prompt, json.dumps(st.session_state.messages)])
 
         # Extract the text of the response (check the exact attribute based on the model's API)
         return response.text  # Make sure this matches the actual response structure
