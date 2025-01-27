@@ -4,6 +4,7 @@ def get_prompt():
     (do not provide code at any place we just need text like chat)
     
     follow these steps:-
+    no need to mention the headings of the step in the output
 
     1> REFINE INPUTS
     First refine inputs sent by user based on:-
