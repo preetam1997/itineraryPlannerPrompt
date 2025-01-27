@@ -46,7 +46,6 @@ if prompt:  # Ensure there is a prompt before trying to get a response
         # Stream the response
         for word in response_generator(prompt, api_key=st.secrets['api_key']):
             full_response += word
-            st.markdown(full_response)  # Display the partial response
 
         # Once the full response is generated, append it to the chat history
         st.session_state.messages.append({"role": "assistant", "content": full_response})
