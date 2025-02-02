@@ -5,7 +5,7 @@ import json
 from Model import get_model
 from Prompt import get_prompt
 
-st.title("Simple Chat")
+st.title("Travel Itinerary Planner")
 
 
 if "messages" not in st.session_state:
